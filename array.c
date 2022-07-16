@@ -3648,6 +3648,19 @@ rb_ary_sort(VALUE ary)
 
 static VALUE rb_ary_bsearch_index(VALUE ary);
 
+VALUE
+rb_ary_monotonically_increasing_p(VALUE ary)
+{
+    for (int index = 0; index < RARRAY_LEN(ary) - 1; ++index) {
+        VALUE elem = rb_ary_elt(ary, index);
+        VALUE next_elem = rb_ary_elt(ary, index + 1);
+        if (rb_cmpint(rb_funcallv(elem, id_cmp, 1, &next_elem), elem, next_elem) > 0) {
+            return Qfalse;
+        }
+    }
+    return Qtrue;
+}
+
 /*
  *  call-seq:
  *    array.bsearch {|element| ... } -> object
@@ -8908,6 +8921,8 @@ Init_Array(void)
     rb_define_method(rb_cArray, "one?", rb_ary_one_p, -1);
     rb_define_method(rb_cArray, "dig", rb_ary_dig, -1);
     rb_define_method(rb_cArray, "sum", rb_ary_sum, -1);
+
+    rb_define_method(rb_cArray, "monotonically_increasing?", rb_ary_monotonically_increasing_p, 0);
 
     rb_define_method(rb_cArray, "deconstruct", rb_ary_deconstruct, 0);
 }
