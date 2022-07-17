@@ -19,6 +19,14 @@ class TestArray < Test::Unit::TestCase
     assert_instance_of(x.class, y)
   end
 
+  def test_monotonically_increasing_p
+    assert_equal(true, [1, 2, 3].monotonically_increasing?)
+    assert_equal(true, [1, 1, 2, 2, 3].monotonically_increasing?)
+    assert_equal(false, [1, 2, 1].monotonically_increasing?)
+    assert_equal(true, [1].monotonically_increasing?)
+    assert_equal(true, [].monotonically_increasing?)
+  end
+
   def test_percent_i
     assert_equal([:foo, :bar], %i[foo bar])
     assert_equal([:"\"foo"], %i["foo])
