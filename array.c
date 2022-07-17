@@ -3654,7 +3654,7 @@ rb_ary_monotonically_increasing_p(VALUE ary)
     for (int index = 0; index < RARRAY_LEN(ary) - 1; ++index) {
         VALUE elem = rb_ary_elt(ary, index);
         VALUE next_elem = rb_ary_elt(ary, index + 1);
-        if (rb_cmpint(rb_funcallv(elem, id_cmp, 1, &next_elem), elem, next_elem) > 0) {
+        if (rb_cmpint(rb_funcall(elem, id_cmp, 1, next_elem), elem, next_elem) > 0) {
             return Qfalse;
         }
     }
